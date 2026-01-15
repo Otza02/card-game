@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bew3ge8snc6hs"]
+
+[ext_resource type="Script" uid="uid://xqfwv5nbe6ns" path="res://scripts/player_hand.gd" id="1_4moqc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4moqc"]
+size = Vector2(1024, 200)
+
+[node name="PlayerHand" type="Node2D"]
+script = ExtResource("1_4moqc")
+
+[node name="HandArea2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HandArea2D"]
+position = Vector2(576, 548)
+shape = SubResource("RectangleShape2D_4moqc")

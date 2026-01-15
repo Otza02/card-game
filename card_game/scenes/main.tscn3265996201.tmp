@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgbuqhmda7s45"]
+
+[ext_resource type="PackedScene" uid="uid://vebtshmu1f2c" path="res://scenes/player_hand.tscn" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://qawvk7gg5x2t" path="res://scenes/card.tscn" id="1_o5qli"]
+
+[node name="Main" type="Node2D"]
+
+[node name="PlayerHand" parent="." instance=ExtResource("1_0wfyh")]
+
+[node name="Card" parent="PlayerHand" instance=ExtResource("1_o5qli")]
+position = Vector2(271, 193)
+
+[node name="Card2" parent="PlayerHand" instance=ExtResource("1_o5qli")]
+position = Vector2(657, 350)
