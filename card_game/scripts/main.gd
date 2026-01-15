@@ -7,6 +7,7 @@ func _on_player_player_end_turn(attacks: Dictionary) -> void:
 	playerAttacks = attacks
 	enemyAttacks = await $Enemy.end_turn()
 	solve_actions("Upper")
+	print("Upper solved")
 
 func action_macth(playerAction: String, enemyAction: String) -> String:
 	if playerAction == enemyAction:
