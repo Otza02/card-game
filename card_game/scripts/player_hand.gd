@@ -43,13 +43,6 @@ func on_card_selected(card: Card):
 
 func on_card_droped(card: Card):
 	cardDroped.emit(card)
-	#var selected_lane: LaneArea = detect_click(2)
-	#if selected_card:
-		#if selected_lane and not selected_lane.selectedCard:
-			#selected_lane.add_card(selected_card.cardResource)
-			#delete_card()
-		#else:
-			#selected_card = null
 
 func delete_card():
 	cards.erase(selected_card)

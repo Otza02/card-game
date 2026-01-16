@@ -12,14 +12,17 @@ signal card_droped(card: Card)
 func init(cardRes: Dictionary):
 	cardResource = cardRes
 	position = initial_pos
-	$InfoDisplay/Action.text = cardResource["Action"]
-	$InfoDisplay/Type.text = cardResource["Type"]
+	$InfoDisplay/Action.text = str(action_name(cardResource["Action"]))
+	$InfoDisplay/Type.text = str(cardResource["Type"])
 	$InfoDisplay/Damage.text = str(cardResource["Damage"])
 	$InfoDisplay/EffectOnUser.text = cardResource["EffectOnUser"]
 	$InfoDisplay/EffectOnEnemy.text = cardResource["EffectOnEnemy"]
 
+func action_name(action: CardsData.Action) -> String:
+	return CardsData.Action.find_key(action)
+
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is InputEventMouseButton and selectable:
+	if event is InputEventMouseButton and event["button_index"] == 1 and selectable:
 		if event.pressed:
 			selected = true
 			card_selected.emit(self)

@@ -7,29 +7,29 @@ var life: int = 20
 func _ready() -> void:
 	update_life()
 
-func end_turn():
+func end_turn() -> Dictionary:
 	var timer = Timer.new()
 	timer.wait_time = 1.2
 	add_child(timer)
 	timer.start()
 	
 	var attacks: Dictionary = {}
-	attacks["Upper"] = create_card()
-	attacks["Lower"] = create_card()
 	
 	var card: Card = cardTemplate.instantiate()
 	card.initial_pos = $UpperLane.global_position - Vector2(120, 0)
-	card.init(attacks["Upper"])
+	card.init(create_card())
 	card.global_position = $UpperLane.global_position + Vector2(200, 0)
 	card.selectable = false
 	add_child(card)
+	attacks[LanesData.LanePosition.UPPER] = card.cardResource
 	
 	card = cardTemplate.instantiate()
 	card.initial_pos = $LowerLane.global_position - Vector2(120, 0)
-	card.init(attacks["Lower"])
+	card.init(create_card())
 	card.global_position = $LowerLane.global_position + Vector2(200, 0)
 	card.selectable = false
 	add_child(card)
+	attacks[LanesData.LanePosition.LOWER] = card.cardResource
 	
 	await  timer.timeout
 	return attacks
@@ -41,9 +41,8 @@ func create_card():
 func update_life():
 	$Life.text = "Life: " + str(life)
 
-func get_attacked(cardData: Dictionary):
-	life -= cardData["Damage"]
-	update_life()
+func get_attacked(lane: LanesData.LanePosition, data: Dictionary):
+	pass
 
-func do_attack(cardData: Dictionary):
-	print(cardData["EffectOnUser"])
+func get_benefits(lane: LanesData.LanePosition, data: Dictionary):
+	pass

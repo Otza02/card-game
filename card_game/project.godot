@@ -14,6 +14,12 @@ config/name="card_game"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+LanesData="*res://resources/lanes/lanesData.gd"
+CardsData="*res://resources/cards/cardsData.gd"
+CharactersData="*res://resources/characters/charactersData.gd"
+
 [layer_names]
 
 2d_physics/layer_1="cards"

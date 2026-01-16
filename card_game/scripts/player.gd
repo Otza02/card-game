@@ -1,7 +1,7 @@
 extends Node2D
 class_name Player
 
-signal playerEndTurn(attacks: Dictionary)
+signal playerEndTurn
 var energy: int = 5
 var life: int = 20
 
@@ -25,32 +25,34 @@ func _on_deck_draw_card() -> void:
 
 func _on_end_turn_button_down() -> void:
 	if $Field.can_end_turn():
-		playerEndTurn.emit($Field.end_turn())
+		$Field.end_turn()
+		playerEndTurn.emit()
 
 func update_life():
 	$Life.text = "Life: " + str(life)
 
-func get_attacked(cardData: Dictionary, lane: String):
-	life -= cardData["Damage"]
-	update_life()
+func get_attacks() -> Dictionary:
+	return $Field.get_attacks()
 
-func do_attack(cardData: Dictionary, lane: String):
-	print("Efecto en usuario", cardData["EffectOnUser"])
+func get_attacked(lane: LanesData.LanePosition, data: Dictionary):
+	$Field.get_attacked(lane, data)
+
+func get_benefits(lane: LanesData.LanePosition, data: Dictionary):
+	$Field.get_benefits(lane, data)
 
 func _on_hand_card_droped(card: Card) -> void:
 	var result = detect_click(2)
 	if result is LaneArea:
 		if not result.has_card():
-			var oldParent = card.get_parent()
-			card.reparent(result, true)
-			card.initial_pos = result.global_position
+			var oldParent = card.get_parent() # Deberia ser la Player/Hand
+			card.reparent(result.cardPos, true) # Nuevo padre Field/Lane/CardPos
+			card.initial_pos = result.cardPos.global_position
 			if oldParent is PlayerHand:
 				oldParent.update_hand()
 	elif result is Area2D and result.get_parent() is PlayerHand:
-		if card.get_parent() is LaneArea:
+		if card.get_parent() is Node2D: # Creo que esto es redundante. Falta test
 			card.reparent($Hand)
 			$Hand.update_hand()
-
 
 func detect_click(layer: int):
 	var space_state = get_world_2d().direct_space_state

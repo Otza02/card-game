@@ -1,15 +1,18 @@
 extends Node2D
 
+@onready var player: Player = $Player
+@onready var enemy: Enemy = $Enemy
+
 var playerAttacks: Dictionary = {}
 var enemyAttacks: Dictionary = {}
 
-func _on_player_player_end_turn(attacks: Dictionary) -> void:
-	playerAttacks = attacks
+func _on_player_player_end_turn() -> void:
+	playerAttacks = $Player.get_attacks()
 	enemyAttacks = await $Enemy.end_turn()
-	solve_actions("Upper")
-	print("Upper solved")
+	solve_actions(LanesData.LanePosition.UPPER)
+	solve_actions(LanesData.LanePosition.LOWER)
 
-func action_macth(playerAction: String, enemyAction: String) -> String:
+func action_macth(playerAction: CardsData.Action, enemyAction: CardsData.Action) -> String:
 	if playerAction == enemyAction:
 		return "Both"
 	
@@ -30,23 +33,19 @@ func action_macth(playerAction: String, enemyAction: String) -> String:
 	else:
 		return "None"
 
-func solve_actions(lane: String):
-	print("solved")
+func solve_actions(lane: LanesData.LanePosition):
 	match action_macth(playerAttacks[lane]["Action"], enemyAttacks[lane]["Action"]):
 		"Both":
-			print("Both")
+			player.get_benefits(lane, playerAttacks[lane])
+			player.get_attacked(lane, enemyAttacks[lane])
+			
+			enemy.get_benefits(lane, enemyAttacks[lane])
+			enemy.get_attacked(lane, playerAttacks[lane])
 		"Player":
-			print("Player")
+			player.get_benefits(lane, playerAttacks[lane])
+			enemy.get_attacked(lane, playerAttacks[lane])
 		"Enemy":
-			print("Enemy")
+			player.get_attacked(lane, enemyAttacks[lane])
+			enemy.get_benefits(lane, enemyAttacks[lane])
 		_:
-			print("todo")
-#
-	#if playerAttacks[lane]["Action"] == enemyAttacks[lane]["Action"]:
-		#$Player.get_attacked(enemyAttacks[lane])
-		#$Player.do_attack(playerAttacks[lane])
-		#
-		#$Enemy.get_attacked(playerAttacks[lane])
-		#$Enemy.do_attack(enemyAttacks[lane])
-	
-	
+			print("Error En main.solve_actions()")

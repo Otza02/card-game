@@ -1,18 +1,8 @@
 extends Node
-class_name CardsData
 
-const Action: = {
-	ATTACK = "Attack",
-	DEFENSE = "Defense",
-	STRATEGY = "Strat"
-}
 
-const Type = {
-	ANY = "Any",
-	FIRE = "Fire",
-	ICE = "Ice",
-	WATER = "Water"
-}
+enum Action {ATTACK, DEFENSE, STRATEGY}
+enum Type {ANY, FIRE, ICE, WATER}
 
 const card = {
 	1:{"Action":Action.ATTACK, "Type":Type.FIRE, "Damage":3, "EffectOnUser":"", "EffectOnEnemy":""},

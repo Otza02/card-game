@@ -17,7 +17,7 @@ script = ExtResource("7_o6xl0")
 cardTemplate = ExtResource("1_o5qli")
 
 [node name="UpperLane" type="Sprite2D" parent="Enemy"]
-position = Vector2(800, 93)
+position = Vector2(800, 96)
 rotation = 1.5708
 scale = Vector2(0.8, 2)
 texture = ExtResource("8_tipki")
