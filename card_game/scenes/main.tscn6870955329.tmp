@@ -1,0 +1,70 @@
+[gd_scene load_steps=9 format=3 uid="uid://dgbuqhmda7s45"]
+
+[ext_resource type="PackedScene" uid="uid://bew3ge8snc6hs" path="res://player/hand/player_hand.tscn" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://qawvk7gg5x2t" path="res://cards/card.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://ciajefygq3jsv" path="res://scripts/main.gd" id="1_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://cwi8uvt7umr8q" path="res://player/field/field.tscn" id="2_tbgi4"]
+[ext_resource type="Script" uid="uid://3y3m7d35ag7d" path="res://player/player.gd" id="2_tefeu"]
+[ext_resource type="PackedScene" uid="uid://dx1buma6du7df" path="res://cards/deck.tscn" id="4_jyhfs"]
+[ext_resource type="Script" uid="uid://di6cmekuj715c" path="res://scripts/enemy.gd" id="7_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://dapwp6et54vh1" path="res://assets/Lane.png.png" id="8_tipki"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_tbgi4")
+
+[node name="Enemy" type="Node2D" parent="."]
+script = ExtResource("7_o6xl0")
+cardTemplate = ExtResource("1_o5qli")
+
+[node name="UpperLane" type="Sprite2D" parent="Enemy"]
+position = Vector2(800, 88)
+rotation = 1.5708
+scale = Vector2(0.8, 2)
+texture = ExtResource("8_tipki")
+
+[node name="LowerLane" type="Sprite2D" parent="Enemy"]
+position = Vector2(800, 272)
+rotation = 1.5708
+scale = Vector2(0.8, 2)
+texture = ExtResource("8_tipki")
+
+[node name="Life" type="Label" parent="Enemy"]
+offset_left = 1024.0
+offset_top = 40.0
+offset_right = 1128.0
+offset_bottom = 96.0
+text = "Life:"
+
+[node name="Player" type="Node2D" parent="."]
+script = ExtResource("2_tefeu")
+
+[node name="Field" parent="Player" instance=ExtResource("2_tbgi4")]
+position = Vector2(352, 184)
+
+[node name="Hand" parent="Player" instance=ExtResource("1_0wfyh")]
+
+[node name="Deck" parent="Player" instance=ExtResource("4_jyhfs")]
+position = Vector2(77, 184)
+cardTemplate = ExtResource("1_o5qli")
+
+[node name="EndTurn" type="Button" parent="Player"]
+offset_left = 36.0
+offset_top = 343.0
+offset_right = 114.0
+offset_bottom = 379.0
+text = "End Turn"
+
+[node name="Life" type="Label" parent="Player"]
+offset_left = 24.0
+offset_top = 40.0
+offset_right = 128.0
+offset_bottom = 96.0
+text = "Life: "
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(576, 320)
+
+[connection signal="playerEndTurn" from="Player" to="." method="_on_player_player_end_turn"]
+[connection signal="cardDroped" from="Player/Hand" to="Player" method="_on_hand_card_droped"]
+[connection signal="draw_card" from="Player/Deck" to="Player" method="_on_deck_draw_card"]
+[connection signal="button_down" from="Player/EndTurn" to="Player" method="_on_end_turn_button_down"]

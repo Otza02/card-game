@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://mi68tsfk55cd"]
+
+[ext_resource type="Texture2D" uid="uid://b2hwv8f012fnp" path="res://assets/effects.png" id="1_dhf3f"]
+[ext_resource type="Script" uid="uid://dv0vmicmbky62" path="res://effects/poison/poison_effect.gd" id="2_dhf3f"]
+
+[node name="PoisonEffect" type="Sprite2D"]
+texture = ExtResource("1_dhf3f")
+hframes = 12
+script = ExtResource("2_dhf3f")
+damage = 10
+durationTurns = 1
+metadata/_custom_type_script = "uid://cm2wfp5jxv6na"

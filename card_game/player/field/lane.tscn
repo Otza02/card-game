@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6x6cceayth85"]
+
+[ext_resource type="Script" uid="uid://doum16irgn18w" path="res://scripts/lane.gd" id="1_6c0se"]
+[ext_resource type="Texture2D" uid="uid://dapwp6et54vh1" path="res://assets/Lane.png.png" id="1_i20lb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6c0se"]
+size = Vector2(192, 256)
+
+[node name="Lane" type="Node2D"]
+script = ExtResource("1_6c0se")
+
+[node name="Lane_png" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.8, 1.066)
+texture = ExtResource("1_i20lb")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+rotation = 1.5708
+scale = Vector2(0.8, 0.8)
+shape = SubResource("RectangleShape2D_6c0se")

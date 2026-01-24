@@ -1,0 +1,115 @@
+[gd_scene load_steps=4 format=3 uid="uid://qawvk7gg5x2t"]
+
+[ext_resource type="Script" uid="uid://b5y6dill457gl" path="res://cards/card.gd" id="1_6u4wf"]
+[ext_resource type="Texture2D" uid="uid://dktdjlfyd7now" path="res://assets/Empty Card.png" id="1_d81rb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6u4wf"]
+size = Vector2(123.75, 185)
+
+[node name="Card" type="Node2D"]
+z_index = 1
+script = ExtResource("1_6u4wf")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-2.38419e-07, -2.38419e-07)
+scale = Vector2(0.8, 0.8)
+shape = SubResource("RectangleShape2D_6u4wf")
+
+[node name="EmptyCard" type="Sprite2D" parent="."]
+position = Vector2(2, 2)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_d81rb")
+
+[node name="InfoDisplay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = -74.0
+offset_right = 50.0
+offset_bottom = 74.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="Action" type="Label" parent="InfoDisplay"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -25.0
+offset_right = 25.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Attack"
+
+[node name="Damage" type="Label" parent="InfoDisplay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -12.0
+offset_right = -22.5
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Type" type="Label" parent="InfoDisplay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 22.5
+offset_top = -12.0
+offset_right = 44.5
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EffectOnUser" type="Label" parent="InfoDisplay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = 16.0
+offset_right = 39.5
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EffectOnEnemy" type="Label" parent="InfoDisplay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = 44.0
+offset_right = 39.5
+offset_bottom = 67.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

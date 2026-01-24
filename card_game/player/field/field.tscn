@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://cwi8uvt7umr8q"]
+
+[ext_resource type="Script" uid="uid://b5vp8mtin5aqf" path="res://player/field/field.gd" id="1_lptdg"]
+[ext_resource type="PackedScene" uid="uid://brkmglpx0c56h" path="res://scenes/character.tscn" id="2_7156t"]
+[ext_resource type="Texture2D" uid="uid://dapwp6et54vh1" path="res://assets/Lane.png.png" id="3_7156t"]
+[ext_resource type="Script" uid="uid://bv2v76h2aa3p4" path="res://player/field/lane_area.gd" id="3_lptdg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ttalb"]
+size = Vector2(384, 152)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7156t"]
+size = Vector2(384, 152)
+
+[node name="Field" type="Node2D" node_paths=PackedStringArray("upperLane", "lowerLane")]
+script = ExtResource("1_lptdg")
+charTemplate = ExtResource("2_7156t")
+upperLane = NodePath("UpperLane")
+lowerLane = NodePath("LowerLane")
+
+[node name="UpperLane" type="Area2D" parent="."]
+position = Vector2(0, -96)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_lptdg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperLane"]
+position = Vector2(0, -7.15256e-07)
+shape = SubResource("RectangleShape2D_ttalb")
+
+[node name="UpperLane" type="Sprite2D" parent="UpperLane"]
+position = Vector2(0, -7.15256e-07)
+rotation = 1.5708
+scale = Vector2(0.8, 2)
+texture = ExtResource("3_7156t")
+
+[node name="LowerLane" type="Area2D" parent="."]
+position = Vector2(0, 88)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_lptdg")
+lane = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerLane"]
+shape = SubResource("RectangleShape2D_7156t")
+
+[node name="LowerLane" type="Sprite2D" parent="LowerLane"]
+rotation = 1.5708
+scale = Vector2(0.8, 2)
+texture = ExtResource("3_7156t")
+
+[node name="UpperCardPos" type="Node2D" parent="."]
+position = Vector2(96, -96)
+
+[node name="UpperCharacterPos" type="Node2D" parent="."]
+position = Vector2(-96, -96)
+
+[node name="LowerCardPos" type="Node2D" parent="."]
+position = Vector2(96, 88)
+
+[node name="LowerCharacterPos" type="Node2D" parent="."]
+position = Vector2(-96, 88)
+
+[connection signal="cardDroped" from="UpperLane" to="." method="_on_upper_lane_card_droped"]
+[connection signal="cardDroped" from="LowerLane" to="." method="_on_lower_lane_card_droped"]
