@@ -5,28 +5,12 @@ signal cardDroped(card: Card)
 
 var cards: Array[Card] = []
 var window_size: Vector2
-#const card_padding = 20
-#const card_size = Vector2.ONE * 192
 
 var selected_card: Card = null
 
 func _ready() -> void:
 	window_size = get_window().size
 	update_hand()
-
-#func _input(event: InputEvent) -> void:
-	#if event is InputEventMouseButton:
-		#if event.pressed:
-			#selected_card = detect_click(1)
-			#if selected_card:
-				#selected_card.selected = true
-		#else:
-			#var selected_lane: Lane = detect_click(2)
-			#if selected_card:
-				#if selected_lane:
-					#selected_lane.use_card(selected_card.texto)
-				#selected_card.selected = false
-				#selected_card = null
 
 func detect_click(layer: int):
 	var space_state = get_world_2d().direct_space_state

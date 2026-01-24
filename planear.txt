@@ -1,0 +1,56 @@
+ObjAtk:
+sender: Character = null
+Action: Action = null
+AttackCount: int = null
+Damage: int = null
+UserEffects: Array[Effect]
+EnemyEffects: Array[Effect]
+
+Player/Field
+create_attacks
+genera ObjAtk con los datos de la carta + monster + effects.before_attack
+Hay que chequear CardsData.Action para los efectos
+
+Player
+take_benefits
+
+take_damage
+aplica effects.before_take_damage(ObjAtk)
+recibe el daño
+recibe enemyEffects
+aplica effects.after_take_damage
+
+
+CardsData.EffectTime {
+  BEFORE_ATTACK
+  BEFORE_TAKE_DAMAGE
+  AFTER_TAKE_DAMAGE
+  ON_END_TURN
+  ON_START_TURN
+}
+
+Effect
+whenToPlay: CardsData.EffectTime
+durationTurns: Int
+sender: Character
+target: Character
+
+do(ObjAtk):
+ aplica cosas
+ modifica el contador
+ if durationTurns <= 0:
+  delete()
+
+delete():
+ queue_free()
+
+
+ActionEffect extends Effect:
+onAction: CardsData.Action
+
+do(ObjAtk):
+ if ObjAtk.Action == onAction:
+  aplica cosas
+  modifica el contador
+  if durationTime <= 0:
+   delete()

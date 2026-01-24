@@ -3,18 +3,23 @@ extends Node2D
 @onready var player: Player = $Player
 @onready var enemy: Enemy = $Enemy
 
-var playerAttacks: Dictionary = {}
-var enemyAttacks: Dictionary = {}
+var playerAttacks: Dictionary[LanesData.LanePosition, AttackContainer] = {}
+var enemyAttacks: Dictionary[LanesData.LanePosition, AttackContainer] = {}
 
 func _on_player_player_end_turn() -> void:
-	playerAttacks = $Player.get_attacks()
-	enemyAttacks = await $Enemy.end_turn()
+	playerAttacks = player.create_attacks()
+	enemyAttacks = await enemy.end_turn()
 	solve_actions(LanesData.LanePosition.UPPER)
 	solve_actions(LanesData.LanePosition.LOWER)
+	await get_tree().create_timer(1).timeout
+	player.clear_field()
+	enemy.clear_field()
 
 func action_macth(playerAction: CardsData.Action, enemyAction: CardsData.Action) -> String:
-	if playerAction == enemyAction:
+	if playerAction == enemyAction and playerAction != CardsData.Action.DEFENSE:
 		return "Both"
+	elif playerAction == enemyAction and playerAction == CardsData.Action.DEFENSE:
+		return "BothDefense"
 	
 	elif playerAction == CardsData.Action.ATTACK and enemyAction == CardsData.Action.STRATEGY:
 		return "Player"
@@ -34,7 +39,7 @@ func action_macth(playerAction: CardsData.Action, enemyAction: CardsData.Action)
 		return "None"
 
 func solve_actions(lane: LanesData.LanePosition):
-	match action_macth(playerAttacks[lane]["Action"], enemyAttacks[lane]["Action"]):
+	match action_macth(playerAttacks[lane].action, enemyAttacks[lane].action):
 		"Both":
 			player.get_benefits(lane, playerAttacks[lane])
 			player.get_attacked(lane, enemyAttacks[lane])
@@ -47,5 +52,7 @@ func solve_actions(lane: LanesData.LanePosition):
 		"Enemy":
 			player.get_attacked(lane, enemyAttacks[lane])
 			enemy.get_benefits(lane, enemyAttacks[lane])
-		_:
-			print("Error En main.solve_actions()")
+		"BothDefense":
+			print("Ambas defensas")
+		"None":
+			print("Ninguna")

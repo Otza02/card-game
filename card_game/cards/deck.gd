@@ -12,6 +12,6 @@ func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int
 func create_card() -> Card:
 	var cardId = randi_range(1, CardsData.card.size())
 	var card: Card = cardTemplate.instantiate()
-	card.initial_pos = position
-	card.init(CardsData.card[cardId])
+	card.initial_pos = global_position
+	card.init(CardsData.get_card(cardId))
 	return card

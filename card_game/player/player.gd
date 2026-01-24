@@ -4,6 +4,10 @@ class_name Player
 signal playerEndTurn
 var energy: int = 5
 var life: int = 20
+var characters: Dictionary[LanesData.LanePosition, CharacterResource] = {
+	LanesData.LanePosition.UPPER: CharactersData.get_character(0),
+	LanesData.LanePosition.LOWER: CharactersData.get_character(0)
+}
 
 func _ready() -> void:
 	var timer = Timer.new()
@@ -16,6 +20,8 @@ func _ready() -> void:
 		await  timer.timeout
 	timer.queue_free()
 	update_life()
+	$Field.add_character(LanesData.LanePosition.UPPER, characters[LanesData.LanePosition.UPPER])
+	$Field.add_character(LanesData.LanePosition.LOWER, characters[LanesData.LanePosition.LOWER])
 
 func _on_deck_draw_card() -> void:
 	if energy > 0:
@@ -31,28 +37,31 @@ func _on_end_turn_button_down() -> void:
 func update_life():
 	$Life.text = "Life: " + str(life)
 
-func get_attacks() -> Dictionary:
-	return $Field.get_attacks()
+func create_attacks() -> Dictionary[LanesData.LanePosition, AttackContainer]:
+	return $Field.create_attacks()
 
-func get_attacked(lane: LanesData.LanePosition, data: Dictionary):
+func get_attacked(lane: LanesData.LanePosition, data: AttackContainer):
 	$Field.get_attacked(lane, data)
 
-func get_benefits(lane: LanesData.LanePosition, data: Dictionary):
+func get_benefits(lane: LanesData.LanePosition, data: AttackContainer):
 	$Field.get_benefits(lane, data)
+
+func clear_field():
+	$Field.clear_field()
 
 func _on_hand_card_droped(card: Card) -> void:
 	var result = detect_click(2)
 	if result is LaneArea:
-		if not result.has_card():
-			var oldParent = card.get_parent() # Deberia ser la Player/Hand
-			card.reparent(result.cardPos, true) # Nuevo padre Field/Lane/CardPos
-			card.initial_pos = result.cardPos.global_position
-			if oldParent is PlayerHand:
-				oldParent.update_hand()
+		result.cardDroped.emit(card)
 	elif result is Area2D and result.get_parent() is PlayerHand:
-		if card.get_parent() is Node2D: # Creo que esto es redundante. Falta test
+		if card.get_parent() is not PlayerHand:
+			var oldParent: Field = card.get_parent().get_parent()
 			card.reparent($Hand)
 			$Hand.update_hand()
+			oldParent.update_cards()
+		#if card.get_parent() is Node2D: # Creo que esto es redundante. Falta test
+			#card.reparent($Hand)
+			#$Hand.update_hand()
 
 func detect_click(layer: int):
 	var space_state = get_world_2d().direct_space_state

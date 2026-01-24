@@ -11,21 +11,32 @@ config_version=5
 [application]
 
 config/name="card_game"
+run/main_scene="uid://dgbuqhmda7s45"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-LanesData="*res://resources/lanes/lanesData.gd"
+LanesData="*res://resources/lanes/LanesData.gd"
 CardsData="*res://resources/cards/cardsData.gd"
 CharactersData="*res://resources/characters/charactersData.gd"
+
+[display]
+
+window/size/viewport_height=640
+
+[file_customization]
+
+folder_colors={
+"res://effects/": "purple"
+}
 
 [layer_names]
 
 2d_physics/layer_1="cards"
-2d_physics/layer_2="lanes"
+2d_physics/layer_2="lanes_hand"
 2d_physics/layer_3="characters"
-2d_physics/layer_4="player_hand"
+2d_physics/layer_4="deck"
 
 [rendering]
 

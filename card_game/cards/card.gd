@@ -1,7 +1,7 @@
 extends Node2D
 class_name Card
 
-var cardResource: Dictionary
+var cardResource: CardResource
 var selectable = true
 var selected = false
 var initial_pos
@@ -9,17 +9,21 @@ var initial_pos
 signal card_selected(card: Card)
 signal card_droped(card: Card)
 
-func init(cardRes: Dictionary):
+
+func init(cardRes: CardResource):
 	cardResource = cardRes
-	position = initial_pos
-	$InfoDisplay/Action.text = str(action_name(cardResource["Action"]))
-	$InfoDisplay/Type.text = str(cardResource["Type"])
-	$InfoDisplay/Damage.text = str(cardResource["Damage"])
-	$InfoDisplay/EffectOnUser.text = cardResource["EffectOnUser"]
-	$InfoDisplay/EffectOnEnemy.text = cardResource["EffectOnEnemy"]
+	global_position = initial_pos
+	$InfoDisplay/Action.text = str(action_name(cardResource.action))
+	$InfoDisplay/Type.text = str(type_name(cardResource.type))
+	$InfoDisplay/Damage.text = str(cardResource.damage)
+	$InfoDisplay/EffectOnUser.text = str(cardResource.userEffect)
+	$InfoDisplay/EffectOnEnemy.text = str(cardResource.enemyEffect)
 
 func action_name(action: CardsData.Action) -> String:
 	return CardsData.Action.find_key(action)
+
+func type_name(type: CardsData.Type) -> String:
+	return CardsData.Type.find_key(type)
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event["button_index"] == 1 and selectable:
@@ -36,3 +40,6 @@ func _process(_delta: float) -> void:
 		global_position = get_global_mouse_position()
 	else:
 		global_position = lerp(global_position, initial_pos, 0.05)
+
+func delete():
+	queue_free()
